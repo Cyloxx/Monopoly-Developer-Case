@@ -21,11 +21,8 @@ namespace Joker.Monopoly
                 DontDestroyOnLoad(gameObject);
             }
             
-            if (inventory == null)
-            {
-                Debug.LogError("InventorySO is not assigned in Inspector!");
-                return;
-            }
+            if (inventory == null) return;
+
 
             inventory.LoadAllItems();
         }

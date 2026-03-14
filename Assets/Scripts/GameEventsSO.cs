@@ -6,15 +6,15 @@ namespace Joker.Monopoly
     [CreateAssetMenu(fileName = "GameEvents", menuName = "Joker/Monopoly/GameEvents")]
     public class GameEventsSO : ScriptableObject
     {
-        public UnityEvent OnDiceRolled   = new UnityEvent();
-        public UnityEvent<ItemDataSO> OnItemCollected = new UnityEvent<ItemDataSO>();
-        public UnityEvent<int> OnPlayerMoved  = new UnityEvent<int>();
+        public UnityEvent onDiceRolled;
+        public UnityEvent<ItemDataSO> onItemCollected;
+        public UnityEvent<int> onPlayerMoved;
 
         public void ClearAllListeners()
         {
-            OnDiceRolled.RemoveAllListeners();
-            OnItemCollected.RemoveAllListeners();
-            OnPlayerMoved.RemoveAllListeners();
+            onDiceRolled.RemoveAllListeners();
+            onItemCollected.RemoveAllListeners();
+            onPlayerMoved.RemoveAllListeners();
         }
     }
 }

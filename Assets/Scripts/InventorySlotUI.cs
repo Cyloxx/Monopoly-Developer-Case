@@ -6,29 +6,34 @@ namespace Joker.Monopoly
 {
     public class InventorySlotUI : MonoBehaviour
     {
-        [SerializeField] private Image iconImage;
-        [SerializeField] private TextMeshProUGUI countText;
+        [SerializeField]
+        private Image iconImage;
+
+        [SerializeField]
+        private TextMeshProUGUI countText;
 
         private ItemDataSO currentItem;
 
-        public void Initialize(ItemDataSO item, int count)
+        public void Initialize(ItemDataSO item, int quantity)
         {
             currentItem = item;
+
             if (item != null)
             {
                 iconImage.sprite = item.icon;
-                countText.text = count.ToString();
+                iconImage.enabled = true;
+                countText.text = quantity.ToString();
             }
             else
             {
                 iconImage.sprite = null;
+                iconImage.enabled = false;
                 countText.text = "0";
             }
         }
-
-        public void UpdateCount(int newCount)
+        public void UpdateQuantity(int newQuantity)
         {
-            countText.text = newCount.ToString();
+            countText.text = newQuantity.ToString();
         }
     }
 }

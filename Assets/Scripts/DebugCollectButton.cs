@@ -12,16 +12,16 @@ namespace Joker.Monopoly
         private ItemDataSO targetItem; 
 
         [SerializeField]
-        private GameEventsSO gameEvents;  // Alternatif yol: event üzerinden tetikle
+        private GameEventsSO gameEvents;  
 
-        private Button button;
+        private Button _button;
 
         private void Awake()
         {
-            button = GetComponent<Button>();
-            if (button != null)
+            _button = GetComponent<Button>();
+            if (_button != null)
             {
-                button.onClick.AddListener(OnButtonClicked);
+                _button.onClick.AddListener(OnButtonClicked);
             }
         }
 
@@ -29,12 +29,7 @@ namespace Joker.Monopoly
         {
             if (gameEvents != null && targetItem != null)
             {
-                gameEvents.OnItemCollected.Invoke(targetItem);
-                Debug.Log($"[Debug] Collected {targetItem.itemName} via event");
-            }
-            else
-            {
-                Debug.LogError("[DebugCollectButton] Missing reference: inventory or gameEvents or targetItem");
+                gameEvents.onItemCollected.Invoke(targetItem);
             }
         }
     }

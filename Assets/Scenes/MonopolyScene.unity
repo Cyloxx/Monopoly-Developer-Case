@@ -130,6 +130,7 @@ GameObject:
   - component: {fileID: 147167645}
   - component: {fileID: 147167647}
   - component: {fileID: 147167646}
+  - component: {fileID: 147167649}
   - component: {fileID: 147167648}
   m_Layer: 5
   m_Name: InventoryPanel
@@ -216,11 +217,26 @@ MonoBehaviour:
   m_Spacing: 0
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
-  m_ChildControlWidth: 1
+  m_ChildControlWidth: 0
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &147167649
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 147167644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79e94b5954dffbb4b9f43c6ad17dce89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventory: {fileID: 11400000, guid: 0919ebceb2c36874291c5b26d1ad14ea, type: 2}
+  contentParent: {fileID: 147167645}
+  slotPrefab: {fileID: 2938178553366763882, guid: f1861d201403ed04692952bc9ab06f0d, type: 3}
 --- !u!1 &543591585
 GameObject:
   m_ObjectHideFlags: 0
@@ -569,6 +585,7 @@ GameObject:
   - component: {fileID: 719680008}
   - component: {fileID: 719680007}
   - component: {fileID: 719680006}
+  - component: {fileID: 719680009}
   m_Layer: 5
   m_Name: Collect Button  (2)
   m_TagString: Untagged
@@ -678,6 +695,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 719680004}
   m_CullTransparentMesh: 1
+--- !u!114 &719680009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 719680004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3ea3af693fe5664595381847dd152ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventory: {fileID: 11400000, guid: 0919ebceb2c36874291c5b26d1ad14ea, type: 2}
+  targetItem: {fileID: 11400000, guid: 21886c96d23a80545a5c99d64390e25b, type: 2}
+  gameEvents: {fileID: 11400000, guid: 9d5ccb39dbc4bc84e968356bd34b2f59, type: 2}
 --- !u!1 &997460699
 GameObject:
   m_ObjectHideFlags: 0
@@ -948,6 +980,7 @@ GameObject:
   - component: {fileID: 1576681165}
   - component: {fileID: 1576681164}
   - component: {fileID: 1576681163}
+  - component: {fileID: 1576681166}
   m_Layer: 5
   m_Name: Collect Button  (1)
   m_TagString: Untagged
@@ -1057,6 +1090,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1576681161}
   m_CullTransparentMesh: 1
+--- !u!114 &1576681166
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1576681161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3ea3af693fe5664595381847dd152ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventory: {fileID: 11400000, guid: 0919ebceb2c36874291c5b26d1ad14ea, type: 2}
+  targetItem: {fileID: 11400000, guid: 39d707b2252d71f4ca8e779e3ad0dd9e, type: 2}
+  gameEvents: {fileID: 11400000, guid: 9d5ccb39dbc4bc84e968356bd34b2f59, type: 2}
 --- !u!1 &2024518311
 GameObject:
   m_ObjectHideFlags: 0
@@ -1345,6 +1393,7 @@ GameObject:
   - component: {fileID: 2101420956}
   - component: {fileID: 2101420955}
   - component: {fileID: 2101420957}
+  - component: {fileID: 2101420958}
   m_Layer: 5
   m_Name: 'Collect Button '
   m_TagString: Untagged
@@ -1454,6 +1503,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2101420958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2101420953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3ea3af693fe5664595381847dd152ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventory: {fileID: 11400000, guid: 0919ebceb2c36874291c5b26d1ad14ea, type: 2}
+  targetItem: {fileID: 11400000, guid: ff49e1833c952144b977397770f93c6e, type: 2}
+  gameEvents: {fileID: 11400000, guid: 9d5ccb39dbc4bc84e968356bd34b2f59, type: 2}
 --- !u!1 &2117713346
 GameObject:
   m_ObjectHideFlags: 0
