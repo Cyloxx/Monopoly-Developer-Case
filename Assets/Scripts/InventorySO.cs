@@ -8,18 +8,12 @@ namespace Joker.Monopoly
     [CreateAssetMenu(fileName = "Inventory", menuName = "Joker/Monopoly/Inventory", order = 200)]
     public class InventorySO : ScriptableObject
     {
-        
-        public ItemDataSO[] loadedItems;
-        
+        [SerializeField] private GameEventsSO gameEvents;
         private readonly Dictionary<ItemDataSO, int> inventory = new Dictionary<ItemDataSO, int>();
         public IReadOnlyDictionary<ItemDataSO, int> Items => inventory;
-        
-        [SerializeField] private GameEventsSO gameEvents;
         public event System.Action OnInventoryChanged;
+        private string _itemsResourcesPath = "Items";
         
-        
-        private string itemsResourcesPath = "Items";
-
         private void OnEnable()
         {
             gameEvents.onItemCollected.AddListener(CollectItem);
@@ -32,43 +26,84 @@ namespace Joker.Monopoly
 
         private void CollectItem(ItemDataSO item)
         {
-            var currentCount = 0;
-
-            if (inventory.ContainsKey(item))
+            if (inventory.TryGetValue(item, out int count))
             {
-                currentCount = inventory[item];
-                inventory[item] = currentCount + 1;
+                inventory[item] = count + 1;
             }
             else
             {
-                inventory.Add(item, 1);
+                inventory[item] = 1;
             }
+
             OnInventoryChanged?.Invoke();
+            Save();
         }
 
         public void LoadAllItems()
         {
-            loadedItems = Resources.LoadAll<ItemDataSO>(itemsResourcesPath);
+            ItemDataSO[] loaded = Resources.LoadAll<ItemDataSO>(_itemsResourcesPath);
 
-            foreach (var item in loadedItems)
+            foreach (var item in loaded)
             {
                 if (item != null && !inventory.ContainsKey(item))
                 {
                     inventory[item] = item.defaultQuantity;
                 }
             }
-            
+
             PrintInventoryState();
+            OnInventoryChanged?.Invoke();  
         }
-        
+
         private void PrintInventoryState()
         {
-            foreach (var kvp in inventory)
+            Debug.Log("[InventorySO] Current inventory state:");
+            if (inventory.Count == 0)
             {
-                var item = kvp.Key;
-                int quantity = kvp.Value;
+                Debug.Log("  Inventory is empty.");
+                return;
+            }
+
+            foreach (var _item in inventory)
+            {
+                var item = _item.Key;
+                int quantity = _item.Value;
                 Debug.Log($"  {item.name} ({item.itemName}): {quantity}");
             }
+        }
+        
+        public void Save()
+        {
+            List<ItemDataSO> keys = new List<ItemDataSO>(inventory.Keys);
+
+            foreach (var key in keys)
+            {
+                if (key == null) continue;
+
+                string saveKey = "Inv_" + key.name;
+                PlayerPrefs.SetInt(saveKey, inventory[key]);
+            }
+
+            PlayerPrefs.Save();
+            Debug.Log("[InventorySO] Saved to PlayerPrefs");
+        }
+        
+        public void Load()
+        {
+            List<ItemDataSO> keys = new List<ItemDataSO>(inventory.Keys);
+
+            foreach (var key in keys)
+            {
+                if (!key) continue;
+
+                string saveKey = "Inv_" + key.name;
+                int savedValue = PlayerPrefs.GetInt(saveKey, 0);
+
+                inventory[key] = savedValue; 
+            }
+
+            OnInventoryChanged?.Invoke();
+            Debug.Log("[InventorySO] Loaded from PlayerPrefs");
         }
     }
 }

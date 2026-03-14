@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 namespace Joker.Monopoly
@@ -20,13 +21,16 @@ namespace Joker.Monopoly
                 Instance = this;
                 DontDestroyOnLoad(gameObject);
             }
-            
-            if (inventory == null) return;
 
-
-            inventory.LoadAllItems();
         }
-        
+
+        private void OnEnable()
+        {
+            inventory.LoadAllItems();
+            inventory.Load();
+
+        }
+
         private void OnDestroy()
         {
             if (Instance == this)

@@ -26,9 +26,8 @@ namespace Joker.Monopoly
 
         private void CreateSlots()
         {
-            ItemDataSO[] items = inventory.loadedItems; 
             
-            foreach (ItemDataSO item in items)
+            foreach (ItemDataSO item in inventory.Items.Keys)
             {
                 GameObject go = Instantiate(slotPrefab, contentParent);
                 InventorySlotUI slot = go.GetComponent<InventorySlotUI>();
