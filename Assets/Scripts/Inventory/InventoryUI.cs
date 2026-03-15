@@ -7,16 +7,17 @@ namespace Joker.Monopoly
     public class InventoryUI : MonoBehaviour
     {
         [SerializeField] private InventorySO inventory;
+        [SerializeField] private ItemCatalogSO itemCatalog;
         [SerializeField] private Transform contentParent;
         [SerializeField] private GameObject slotPrefab;
 
-        private readonly Dictionary<ItemDataSO, InventorySlotUI> _itemSlot = new();
+        private readonly Dictionary<ItemDataSO, InventorySlotUI> itemSlots = new();
 
         private void Start()
         {
             CreateSlots();
             inventory.OnInventoryChanged += RefreshUI;
-            RefreshUI(); 
+            RefreshUI();
         }
 
         private void OnDestroy()
@@ -26,14 +27,25 @@ namespace Joker.Monopoly
 
         private void CreateSlots()
         {
-            
-            foreach (ItemDataSO item in inventory.Items.Keys)
+            foreach (Transform child in contentParent)
             {
-                GameObject go = Instantiate(slotPrefab, contentParent);
-                InventorySlotUI slot = go.GetComponent<InventorySlotUI>();
+                Destroy(child.gameObject);
+            }
+
+            itemSlots.Clear();
+
+            foreach (ItemDataSO item in itemCatalog.Items)
+            {
+                if (item == null)
+                {
+                    continue;
+                }
+
+                GameObject slotObject = Instantiate(slotPrefab, contentParent);
+                InventorySlotUI slot = slotObject.GetComponent<InventorySlotUI>();
 
                 slot.Initialize(item, item.defaultQuantity);
-                _itemSlot[item] = slot;
+                itemSlots[item] = slot;
             }
 
             LayoutRebuilder.ForceRebuildLayoutImmediate(contentParent.GetComponent<RectTransform>());
@@ -41,15 +53,18 @@ namespace Joker.Monopoly
 
         private void RefreshUI()
         {
-            foreach (var pair in _itemSlot)
+            foreach (var pair in itemSlots)
             {
                 ItemDataSO item = pair.Key;
                 InventorySlotUI slot = pair.Value;
 
-                if (slot == null) continue;
+                if (slot == null)
+                {
+                    continue;
+                }
 
-                int quantity = inventory.Items[item];
-                slot.UpdateQuantity(quantity);
+                int quantity = inventory.Items.TryGetValue(item, out int quantityValue) ? quantityValue : 0;
+                slot.UpdateQuantity(quantityValue);
             }
         }
     }
