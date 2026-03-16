@@ -7,14 +7,14 @@ namespace Joker.Monopoly
     [CreateAssetMenu(fileName = "Inventory", menuName = "Joker/Monopoly/Inventory", order = 200)]
     public class InventorySO : ScriptableObject
     {
-        private readonly Dictionary<ItemDataSO, int> inventory = new Dictionary<ItemDataSO, int>();
+        private readonly Dictionary<ItemDataSO, int> _inventory = new Dictionary<ItemDataSO, int>();
 
-        public IReadOnlyDictionary<ItemDataSO, int> Items => inventory;
+        public IReadOnlyDictionary<ItemDataSO, int> Items => _inventory;
         public event Action OnInventoryChanged;
 
         public void InitializeItems(IEnumerable<ItemDataSO> items)
         {
-            inventory.Clear();
+            _inventory.Clear();
 
             foreach (ItemDataSO item in items)
             {
@@ -23,9 +23,9 @@ namespace Joker.Monopoly
                     continue;
                 }
 
-                if (!inventory.ContainsKey(item))
+                if (!_inventory.ContainsKey(item))
                 {
-                    inventory[item] = item.defaultQuantity;
+                    _inventory[item] = item.defaultQuantity;
                 }
             }
 
@@ -44,13 +44,13 @@ namespace Joker.Monopoly
                 return;
             }
 
-            if (inventory.TryGetValue(item, out int currentAmount))
+            if (_inventory.TryGetValue(item, out int currentAmount))
             {
-                inventory[item] = currentAmount + amount;
+                _inventory[item] = currentAmount + amount;
             }
             else
             {
-                inventory[item] = amount;
+                _inventory[item] = amount;
             }
 
             OnInventoryChanged?.Invoke();
@@ -63,7 +63,7 @@ namespace Joker.Monopoly
                 return;
             }
 
-            List<ItemDataSO> keys = new List<ItemDataSO>(inventory.Keys);
+            List<ItemDataSO> keys = new List<ItemDataSO>(_inventory.Keys);
 
             foreach (ItemDataSO item in keys)
             {
@@ -74,7 +74,7 @@ namespace Joker.Monopoly
 
                 if (loadedData.TryGetValue(item.ItemId, out int loadedAmount))
                 {
-                    inventory[item] = loadedAmount;
+                    _inventory[item] = loadedAmount;
                 }
             }
 
@@ -85,13 +85,13 @@ namespace Joker.Monopoly
         {
             Debug.Log("[InventorySO] Current inventory state:");
 
-            if (inventory.Count == 0)
+            if (_inventory.Count == 0)
             {
                 Debug.Log("  Inventory is empty.");
                 return;
             }
 
-            foreach (var pair in inventory)
+            foreach (var pair in _inventory)
             {
                 ItemDataSO item = pair.Key;
                 int quantity = pair.Value;
