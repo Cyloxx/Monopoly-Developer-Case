@@ -571,6 +571,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4765837641366111142}
   - component: {fileID: 1008898081275679279}
+  - component: {fileID: 5220614392529771205}
   m_Layer: 0
   m_Name: BoardTilePrefab
   m_TagString: Untagged
@@ -610,3 +611,16 @@ MonoBehaviour:
   tileIndexText: {fileID: 942960950971357614}
   rewardAmountText: {fileID: 1182117437188054834}
   rewardIconImage: {fileID: 2812707313346254829}
+--- !u!114 &5220614392529771205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8961198450907734371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68bfce432fc815f44836e81b8820bdc0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileView: {fileID: 1008898081275679279}

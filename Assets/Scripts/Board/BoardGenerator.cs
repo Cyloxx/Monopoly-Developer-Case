@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Joker.Monopoly
@@ -19,6 +21,9 @@ namespace Joker.Monopoly
 
         [Header("Debug")]
         [SerializeField] private bool generateOnStart = true;
+
+        public BoardRuntime Runtime { get; private set; }
+        public event Action<BoardRuntime> OnBoardGenerated;
 
         private void Start()
         {
@@ -60,6 +65,7 @@ namespace Joker.Monopoly
             }
 
             Vector3 normalizedDirection = spawnDirection.normalized;
+            List<BoardTile> spawnedTiles = new List<BoardTile>();
 
             for (int i = 0; i < boardData.tiles.Count; i++)
             {
@@ -68,20 +74,26 @@ namespace Joker.Monopoly
 
                 GameObject tileObject = Instantiate(boardTilePrefab, spawnPosition, Quaternion.identity, boardRoot);
 
-                BoardTileView tileView = tileObject.GetComponent<BoardTileView>();
+                BoardTile boardTile = tileObject.GetComponent<BoardTile>();
 
-                if (tileView == null)
+                if (boardTile == null)
                 {
-                    Debug.LogError("[BoardGenerator] Spawned tile prefab does not contain BoardTileView component.");
+                    Debug.LogError("[BoardGenerator] Spawned tile prefab does not contain BoardTile component.");
                     continue;
                 }
 
-                tileView.Bind(tileData, rewardVisualMapping);
+                boardTile.Initialize(tileData, rewardVisualMapping);
+                spawnedTiles.Add(boardTile);
             }
+
+            Runtime = new BoardRuntime(spawnedTiles);
+            OnBoardGenerated?.Invoke(Runtime);
         }
 
         private void ClearBoard()
         {
+            Runtime = null;
+
             for (int i = boardRoot.childCount - 1; i >= 0; i--)
             {
                 Destroy(boardRoot.GetChild(i).gameObject);

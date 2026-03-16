@@ -22,5 +22,19 @@ namespace Joker.Monopoly
             icon = null;
             return false;
         }
+        public bool TryGetItem(TileRewardType rewardType, out ItemDataSO itemData)
+        {
+            foreach (RewardVisualData rewardVisual in rewardVisuals)
+            {
+                if (rewardVisual.rewardType == rewardType)
+                {
+                    itemData = rewardVisual.itemData;
+                    return itemData != null;
+                }
+            }
+
+            itemData = null;
+            return false;
+        }
     }
 }
