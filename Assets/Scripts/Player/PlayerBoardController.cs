@@ -67,9 +67,28 @@ namespace Joker.Monopoly
                 return;
             }
 
-            PlaceAtTileIndex(startTileIndex);
+            SnapToTileIndex(startTileIndex);
         }
-        private void PlaceAtTileIndex(int tileIndex)
+        private Vector3 GetTileTargetPosition(int tileIndex)
+        {
+            if (boardGenerator == null || boardGenerator.Runtime == null)
+            {
+                Debug.LogWarning("[PlayerBoardController] BoardRuntime is not ready.");
+                return Vector3.zero;
+            }
+
+            BoardTile targetTile = boardGenerator.Runtime.GetWrappedTile(tileIndex);
+
+            if (targetTile == null)
+            {
+                Debug.LogError("[PlayerBoardController] Target tile could not be found.");
+                return Vector3.zero;
+            }
+
+            return targetTile.GetWorldPosition() + tokenOffset;
+        }
+
+        private void SnapToTileIndex(int tileIndex)
         {
             if (boardGenerator == null || boardGenerator.Runtime == null)
             {
@@ -92,7 +111,6 @@ namespace Joker.Monopoly
             }
 
             CurrentTileIndex = boardGenerator.Runtime.WrapIndex(tileIndex);
-
             Vector3 targetPosition = targetTile.GetWorldPosition() + tokenOffset;
             playerToken.SetPosition(targetPosition);
         }
@@ -144,7 +162,11 @@ namespace Joker.Monopoly
             for (int i = 0; i < stepCount; i++)
             {
                 int nextTileIndex = CurrentTileIndex + direction;
-                PlaceAtTileIndex(nextTileIndex);
+                int wrappedTileIndex = boardGenerator.Runtime.WrapIndex(nextTileIndex);
+                Vector3 targetPosition = GetTileTargetPosition(wrappedTileIndex);
+
+                CurrentTileIndex = wrappedTileIndex;
+                yield return StartCoroutine(playerToken.MoveToPositionRoutine(targetPosition));
 
                 Debug.Log($"[PlayerBoardController] Step {i + 1}/{stepCount}, CurrentTileIndex: {CurrentTileIndex}");
 

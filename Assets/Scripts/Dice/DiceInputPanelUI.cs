@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,19 +7,27 @@ namespace Joker.Monopoly
 {
     public class DiceInputPanelUI : MonoBehaviour
     {
-        [SerializeField] private TMP_InputField firstDiceInputField;
-        [SerializeField] private TMP_InputField secondDiceInputField;
+        [SerializeField] private Transform inputContainer;
+        [SerializeField] private DiceInputItemUI diceInputItemPrefab;
         [SerializeField] private DiceMovementController diceMovementController;
-        [SerializeField] private TextMeshProUGUI feedbackText;
         [SerializeField] private Button applyButton;
         [SerializeField] private PlayerBoardController playerBoardController;
-        
+        [SerializeField] private TextMeshProUGUI feedbackText;
+
+        private readonly List<DiceInputItemUI> inputItems = new List<DiceInputItemUI>();
+
         private void OnEnable()
         {
             if (playerBoardController != null)
             {
                 playerBoardController.OnMovementStarted += HandleMovementStarted;
                 playerBoardController.OnMovementCompleted += HandleMovementCompleted;
+            }
+
+            if (diceMovementController != null)
+            {
+                diceMovementController.OnRollProcessingStarted += HandleRollProcessingStarted;
+                diceMovementController.OnRollProcessingCompleted += HandleRollProcessingCompleted;
             }
         }
 
@@ -29,70 +38,131 @@ namespace Joker.Monopoly
                 playerBoardController.OnMovementStarted -= HandleMovementStarted;
                 playerBoardController.OnMovementCompleted -= HandleMovementCompleted;
             }
+
+            if (diceMovementController != null)
+            {
+                diceMovementController.OnRollProcessingStarted -= HandleRollProcessingStarted;
+                diceMovementController.OnRollProcessingCompleted -= HandleRollProcessingCompleted;
+            }
+        }
+
+        public void SetDiceCount(int diceCount)
+        {
+            if (diceCount < 1)
+            {
+                diceCount = 1;
+            }
+
+            ClearInputItems();
+
+            for (int i = 0; i < diceCount; i++)
+            {
+                DiceInputItemUI item = Instantiate(diceInputItemPrefab, inputContainer);
+                item.Configure(i + 1);
+                inputItems.Add(item);
+            }
         }
 
         public void ApplyDiceInput()
         {
             if (playerBoardController != null && playerBoardController.IsMoving)
             {
-                SetFeedback("Player is already moving.");
                 return;
             }
-            
+
+            if (diceMovementController != null && diceMovementController.IsProcessingRoll)
+            {
+                return;
+            }
+
             if (diceMovementController == null)
             {
                 SetFeedback("Dice movement controller reference is missing.");
-                Debug.LogError("[DiceInputPanelUI] DiceMovementController reference is missing.");
                 return;
             }
 
-            if (!TryParseInput(firstDiceInputField, out int firstDiceValue, "Dice 1"))
+            List<int> diceValues = new List<int>();
+
+            for (int i = 0; i < inputItems.Count; i++)
             {
-                return;
+                DiceInputItemUI inputItem = inputItems[i];
+
+                if (inputItem == null)
+                {
+                    SetFeedback($"Dice {i + 1} input item is missing.");
+                    return;
+                }
+
+                if (!inputItem.TryGetValue(out int diceValue))
+                {
+                    SetFeedback($"Dice {i + 1} must be a valid number.");
+                    return;
+                }
+
+                diceValues.Add(diceValue);
             }
 
-            if (!TryParseInput(secondDiceInputField, out int secondDiceValue, "Dice 2"))
-            {
-                return;
-            }
-
-            bool success = diceMovementController.TryApplyDiceInput(firstDiceValue, secondDiceValue);
+            bool success = diceMovementController.TryApplyDiceInput(diceValues);
 
             if (!success)
             {
-                SetFeedback("Please enter values between 1 and 6.");
+                SetFeedback("Please enter valid dice values between 1 and 6.");
                 return;
             }
 
-            SetFeedback($"Applied dice values: {firstDiceValue} + {secondDiceValue}");
+            SetFeedback("Dice input applied.");
         }
 
-        private bool TryParseInput(TMP_InputField inputField, out int value, string fieldName)
+        private void HandleMovementStarted()
         {
-            value = 0;
+            SetInteractable(false);
+        }
 
-            if (inputField == null)
+        private void HandleMovementCompleted()
+        {
+            SetInteractable(true);
+        }
+
+        private void HandleRollProcessingStarted()
+        {
+            SetInteractable(false);
+        }
+
+        private void HandleRollProcessingCompleted()
+        {
+            if (playerBoardController == null || !playerBoardController.IsMoving)
             {
-                SetFeedback($"{fieldName} input field reference is missing.");
-                Debug.LogError($"[DiceInputPanelUI] {fieldName} input field reference is missing.");
-                return false;
+                SetInteractable(true);
+            }
+        }
+
+        private void SetInteractable(bool isInteractable)
+        {
+            foreach (DiceInputItemUI inputItem in inputItems)
+            {
+                if (inputItem != null)
+                {
+                    inputItem.SetInteractable(isInteractable);
+                }
             }
 
-            string rawText = inputField.text;
-
-            if (string.IsNullOrWhiteSpace(rawText))
+            if (applyButton != null)
             {
-                SetFeedback($"{fieldName} is empty.");
-                return false;
+                applyButton.interactable = isInteractable;
+            }
+        }
+
+        private void ClearInputItems()
+        {
+            for (int i = inputItems.Count - 1; i >= 0; i--)
+            {
+                if (inputItems[i] != null)
+                {
+                    Destroy(inputItems[i].gameObject);
+                }
             }
 
-            if (!int.TryParse(rawText, out value))
-            {
-                SetFeedback($"{fieldName} must be a number.");
-                return false;
-            }
-
-            return true;
+            inputItems.Clear();
         }
 
         private void SetFeedback(string message)
@@ -103,36 +173,6 @@ namespace Joker.Monopoly
             }
 
             Debug.Log($"[DiceInputPanelUI] {message}");
-        }
-        
-        private void HandleMovementStarted()
-        {
-            SetInteractable(false);
-            SetFeedback("Player is moving...");
-        }
-
-        private void HandleMovementCompleted()
-        {
-            SetInteractable(true);
-            SetFeedback("Movement completed.");
-        }
-
-        private void SetInteractable(bool isInteractable)
-        {
-            if (firstDiceInputField != null)
-            {
-                firstDiceInputField.interactable = isInteractable;
-            }
-
-            if (secondDiceInputField != null)
-            {
-                secondDiceInputField.interactable = isInteractable;
-            }
-
-            if (applyButton != null)
-            {
-                applyButton.interactable = isInteractable;
-            }
         }
     }
 }
