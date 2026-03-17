@@ -9,8 +9,8 @@ namespace Joker.Monopoly
     {
         [SerializeField] private DiceRoller diceRoller;
         [SerializeField] private PlayerBoardController playerBoardController;
-        [SerializeField] private List<DiceView> diceViews = new List<DiceView>();
-
+        [SerializeField] private DicePoolController dicePoolController;
+        [SerializeField] private DiceZoneLayout diceZoneLayout;
         private Coroutine rollAndMoveCoroutine;
         private int currentDiceCount = 2;
 
@@ -23,12 +23,17 @@ namespace Joker.Monopoly
         {
             currentDiceCount = Mathf.Max(1, diceCount);
 
-            for (int i = 0; i < diceViews.Count; i++)
+            if (dicePoolController == null)
             {
-                if (diceViews[i] != null)
-                {
-                    diceViews[i].gameObject.SetActive(i < currentDiceCount);
-                }
+                Debug.LogError("[DiceMovementController] DicePoolController reference is missing.");
+                return;
+            }
+
+            dicePoolController.SetActiveDiceCount(currentDiceCount);
+
+            if (diceZoneLayout != null)
+            {
+                diceZoneLayout.ApplyLayout(dicePoolController.ActiveDiceViews, currentDiceCount);
             }
         }
 
@@ -71,16 +76,24 @@ namespace Joker.Monopoly
 
         private IEnumerator PlayDiceAndMoveCoroutine(List<int> diceValues, int totalValue)
         {
+            if (dicePoolController == null)
+            {
+                Debug.LogError("[DiceMovementController] DicePoolController reference is missing.");
+                rollAndMoveCoroutine = null;
+                yield break;
+            }
+
+            IReadOnlyList<DiceView> activeDiceViews = dicePoolController.ActiveDiceViews;
             List<Coroutine> runningCoroutines = new List<Coroutine>();
 
             for (int i = 0; i < currentDiceCount; i++)
             {
-                if (i >= diceViews.Count || diceViews[i] == null)
+                if (i >= activeDiceViews.Count || activeDiceViews[i] == null)
                 {
                     continue;
                 }
 
-                runningCoroutines.Add(StartCoroutine(diceViews[i].RollToValueRoutine(diceValues[i])));
+                runningCoroutines.Add(StartCoroutine(activeDiceViews[i].RollToValueRoutine(diceValues[i])));
             }
 
             for (int i = 0; i < runningCoroutines.Count; i++)

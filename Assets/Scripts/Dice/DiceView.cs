@@ -48,6 +48,7 @@ namespace Joker.Monopoly
 
             float elapsed = 0f;
 
+            randomSpinDuration = Random.Range(1.1f, 2.2f);
             while (elapsed < randomSpinDuration)
             {
                 transform.Rotate(spinSpeed * Time.deltaTime, Space.Self);

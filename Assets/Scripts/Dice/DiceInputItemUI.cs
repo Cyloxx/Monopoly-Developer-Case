@@ -19,7 +19,8 @@ namespace Joker.Monopoly
 
             if (diceInputField != null)
             {
-                diceInputField.text = string.Empty;
+                int randomDiceValue = 1;
+                diceInputField.text = randomDiceValue.ToString();
             }
         }
 

@@ -7,14 +7,13 @@ namespace Joker.Monopoly
 {
     public class DiceInputPanelUI : MonoBehaviour
     {
-        [SerializeField] private Transform inputContainer;
-        [SerializeField] private DiceInputItemUI diceInputItemPrefab;
+        [SerializeField] private DiceInputItemPoolController inputItemPoolController;
         [SerializeField] private DiceMovementController diceMovementController;
         [SerializeField] private Button applyButton;
         [SerializeField] private PlayerBoardController playerBoardController;
         [SerializeField] private TextMeshProUGUI feedbackText;
 
-        private readonly List<DiceInputItemUI> inputItems = new List<DiceInputItemUI>();
+        [SerializeField] private TMP_Dropdown diceCountDropdown;
 
         private void OnEnable()
         {
@@ -48,19 +47,13 @@ namespace Joker.Monopoly
 
         public void SetDiceCount(int diceCount)
         {
-            if (diceCount < 1)
+            if (inputItemPoolController == null)
             {
-                diceCount = 1;
+                Debug.LogError("[DiceInputPanelUI] Input item pool controller reference is missing.");
+                return;
             }
 
-            ClearInputItems();
-
-            for (int i = 0; i < diceCount; i++)
-            {
-                DiceInputItemUI item = Instantiate(diceInputItemPrefab, inputContainer);
-                item.Configure(i + 1);
-                inputItems.Add(item);
-            }
+            inputItemPoolController.SetActiveItemCount(diceCount);
         }
 
         public void ApplyDiceInput()
@@ -81,11 +74,12 @@ namespace Joker.Monopoly
                 return;
             }
 
+            var activeItems = inputItemPoolController.ActiveItems;
             List<int> diceValues = new List<int>();
 
-            for (int i = 0; i < inputItems.Count; i++)
+            for (int i = 0; i < activeItems.Count; i++)
             {
-                DiceInputItemUI inputItem = inputItems[i];
+                DiceInputItemUI inputItem = activeItems[i];
 
                 if (inputItem == null)
                 {
@@ -138,11 +132,16 @@ namespace Joker.Monopoly
 
         private void SetInteractable(bool isInteractable)
         {
-            foreach (DiceInputItemUI inputItem in inputItems)
+            if (inputItemPoolController != null)
             {
-                if (inputItem != null)
+                var activeItems = inputItemPoolController.ActiveItems;
+
+                for (int i = 0; i < activeItems.Count; i++)
                 {
-                    inputItem.SetInteractable(isInteractable);
+                    if (activeItems[i] != null)
+                    {
+                        activeItems[i].SetInteractable(isInteractable);
+                    }
                 }
             }
 
@@ -150,19 +149,11 @@ namespace Joker.Monopoly
             {
                 applyButton.interactable = isInteractable;
             }
-        }
 
-        private void ClearInputItems()
-        {
-            for (int i = inputItems.Count - 1; i >= 0; i--)
+            if (diceCountDropdown != null)
             {
-                if (inputItems[i] != null)
-                {
-                    Destroy(inputItems[i].gameObject);
-                }
+                diceCountDropdown.interactable = isInteractable;
             }
-
-            inputItems.Clear();
         }
 
         private void SetFeedback(string message)
