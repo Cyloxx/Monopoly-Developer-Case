@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -15,8 +16,8 @@ namespace Joker.Monopoly
 
         private Coroutine movementCoroutine;
         
-        public event System.Action OnMovementStarted;
-        public event System.Action OnMovementCompleted;
+        public event Action OnMovementStarted;
+        public event Action OnMovementCompleted;
         
         public bool IsMoving => isMoving;
         private bool isMoving;

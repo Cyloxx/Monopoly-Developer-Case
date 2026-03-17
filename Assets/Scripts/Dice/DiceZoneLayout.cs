@@ -48,7 +48,7 @@ namespace Joker.Monopoly
                 }
 
                 diceViews[i].transform.SetParent(transform, false);
-                diceViews[i].transform.localPosition = localPositions[i];
+                diceViews[i].SetRestingLocalPosition(localPositions[i]);
                 diceViews[i].transform.localScale = Vector3.one * scale;
             }
         }

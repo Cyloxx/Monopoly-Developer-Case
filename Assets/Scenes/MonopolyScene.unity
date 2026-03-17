@@ -166,7 +166,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 147167644}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -1262,8 +1262,8 @@ RectTransform:
   m_GameObject: {fileID: 634967858}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1535890494}
   - {fileID: 1388450800}
@@ -1308,7 +1308,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 634967858}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -1351,12 +1351,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47c52e325d385d444b405f87938939ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputContainer: {fileID: 820681555}
-  diceInputItemPrefab: {fileID: 8601057233948103042, guid: 174d9540d12d76c448b94f434975dbb6, type: 3}
+  inputItemPoolController: {fileID: 1699693408}
   diceMovementController: {fileID: 1714697684}
   applyButton: {fileID: 1096426115}
   playerBoardController: {fileID: 1983743594}
   feedbackText: {fileID: 0}
+  diceCountDropdown: {fileID: 1531251474}
 --- !u!114 &634967864
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2531,9 +2531,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1128146201}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: -8}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -3616,6 +3616,52 @@ MonoBehaviour:
   spawnDirection: {x: 1, y: 0, z: 0}
   tileSpacing: 1
   generateOnStart: 1
+--- !u!1 &1699693407
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1699693409}
+  - component: {fileID: 1699693408}
+  m_Layer: 0
+  m_Name: DiceInputItemPoolController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1699693408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1699693407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7159a005b8b7a6143a4bfab1ffc83d6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  diceInputItemPrefab: {fileID: 8601057233948103042, guid: 174d9540d12d76c448b94f434975dbb6, type: 3}
+  itemParent: {fileID: 820681555}
+--- !u!4 &1699693409
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1699693407}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1702438798
 GameObject:
   m_ObjectHideFlags: 0
@@ -3986,6 +4032,7 @@ GameObject:
   - component: {fileID: 2024518313}
   - component: {fileID: 2024518312}
   - component: {fileID: 2024518315}
+  - component: {fileID: 2024518316}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -4060,7 +4107,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2024518311}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.30070576, y: 0, z: 0, w: 0.953717}
+  m_LocalRotation: {x: 0.30070576, y: -0, z: -0, w: 0.953717}
   m_LocalPosition: {x: 0, y: 3, z: -11}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4111,6 +4158,26 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+--- !u!114 &2024518316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2024518311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72db6f54df88ccf45abb4d23402cb278, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerOffset: {x: 0, y: 2, z: -4}
+  diceOffset: {x: 0, y: 2, z: -3}
+  smoothTime: 0.5
+  lookAtTarget: 1
+  playerTarget: {fileID: 867076010}
+  diceTarget: {fileID: 1128146203}
+  playerBoardController: {fileID: 1983743594}
+  rotationSmoothSpeed: 0.2
 --- !u!1 &2032406204
 GameObject:
   m_ObjectHideFlags: 0
@@ -4833,3 +4900,4 @@ SceneRoots:
   - {fileID: 1714697683}
   - {fileID: 1128146203}
   - {fileID: 1708622128}
+  - {fileID: 1699693409}

@@ -5,12 +5,19 @@ namespace Joker.Monopoly
 {
     public class DiceView : MonoBehaviour
     {
-        [Header("Spin")]
-        [SerializeField] private float randomSpinDuration = 0.55f;
-        [SerializeField] private float settleDuration = 0.3f;
-        [SerializeField] private float overshootDuration = 0.08f;
-        [SerializeField] private Vector3 randomSpinEulerSpeedMin = new Vector3(650f, 780f, 700f);
-        [SerializeField] private Vector3 randomSpinEulerSpeedMax = new Vector3(920f, 1080f, 980f);
+        [Header("Drop Animation")] [SerializeField]
+        private float spawnHeight;
+
+        [SerializeField] private float dropDuration;
+        [SerializeField] private float firstBounceHeight;
+        [SerializeField] private float secondBounceHeight;
+        [SerializeField] private float firstBounceDuration;
+        [SerializeField] private float secondBounceDuration;
+
+        [Header("Spin")] [SerializeField] private float randomSpinDuration;
+        [SerializeField] private float settleDuration;
+        [SerializeField] private Vector3 randomSpinEulerSpeedMin;
+        [SerializeField] private Vector3 randomSpinEulerSpeedMax;
 
         [Header("Face Rotations")]
         [SerializeField] private Vector3 face1Rotation;
@@ -20,6 +27,7 @@ namespace Joker.Monopoly
         [SerializeField] private Vector3 face5Rotation;
         [SerializeField] private Vector3 face6Rotation;
 
+        private Vector3 restingLocalPosition;
         private Coroutine rollCoroutine;
 
         public IEnumerator RollToValueRoutine(int value)
@@ -46,15 +54,27 @@ namespace Joker.Monopoly
                 Random.Range(randomSpinEulerSpeedMin.y, randomSpinEulerSpeedMax.y),
                 Random.Range(randomSpinEulerSpeedMin.z, randomSpinEulerSpeedMax.z));
 
+            Vector3 dropStartPosition = restingLocalPosition + Vector3.up * spawnHeight;
+            transform.localPosition = dropStartPosition;
+
             float elapsed = 0f;
 
-            randomSpinDuration = Random.Range(1.1f, 2.2f);
-            while (elapsed < randomSpinDuration)
+            while (elapsed < dropDuration)
             {
+                float t = elapsed / dropDuration;
+                float easedT = EaseInCubic(t);
+
+                transform.localPosition = Vector3.Lerp(dropStartPosition, restingLocalPosition, easedT);
                 transform.Rotate(spinSpeed * Time.deltaTime, Space.Self);
+
                 elapsed += Time.deltaTime;
                 yield return null;
             }
+
+            transform.localPosition = restingLocalPosition;
+
+            yield return StartCoroutine(PlayBounceCoroutine(firstBounceHeight, firstBounceDuration, spinSpeed * 0.35f));
+            yield return StartCoroutine(PlayBounceCoroutine(secondBounceHeight, secondBounceDuration, spinSpeed * 0.18f));
 
             Quaternion startRotation = transform.rotation;
             elapsed = 0f;
@@ -64,41 +84,75 @@ namespace Joker.Monopoly
                 float t = elapsed / settleDuration;
                 float easedT = EaseOutCubic(t);
                 transform.rotation = Quaternion.Slerp(startRotation, targetRotation, easedT);
-                elapsed += Time.deltaTime;
-                yield return null;
-            }
 
-            Quaternion overshootRotation = targetRotation * Quaternion.Euler(4f, -3f, 2f);
-            elapsed = 0f;
-
-            while (elapsed < overshootDuration)
-            {
-                float t = elapsed / overshootDuration;
-                transform.rotation = Quaternion.Slerp(targetRotation, overshootRotation, t);
-                elapsed += Time.deltaTime;
-                yield return null;
-            }
-
-            elapsed = 0f;
-
-            while (elapsed < overshootDuration)
-            {
-                float t = elapsed / overshootDuration;
-                float easedT = EaseOutBack(t);
-                transform.rotation = Quaternion.Slerp(overshootRotation, targetRotation, easedT);
                 elapsed += Time.deltaTime;
                 yield return null;
             }
 
             transform.rotation = targetRotation;
+            transform.localPosition = restingLocalPosition;
+
+            startRotation = transform.rotation;
+            elapsed = 0f;
+
+            while (elapsed < settleDuration)
+            {
+                float t = elapsed / settleDuration;
+                float easedT = EaseOutCubic(t);
+                transform.rotation = Quaternion.Slerp(startRotation, targetRotation, easedT);
+
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+
+            transform.rotation = targetRotation;
+            transform.localPosition = restingLocalPosition;
         }
+        
+        private IEnumerator PlayBounceCoroutine(float bounceHeight, float duration, Vector3 spinSpeed)
+        {
+            Vector3 bounceTop = restingLocalPosition + Vector3.up * bounceHeight;
+
+            float elapsed = 0f;
+
+            while (elapsed < duration)
+            {
+                float t = elapsed / duration;
+                float easedT = EaseOutCubic(t);
+
+                transform.localPosition = Vector3.Lerp(restingLocalPosition, bounceTop, easedT);
+                transform.Rotate(spinSpeed * Time.deltaTime, Space.Self);
+
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+
+            elapsed = 0f;
+
+            duration = Random.Range(0.3f, .6f);
+            while (elapsed < duration)
+            {
+                float t = elapsed / duration;
+                float easedT = EaseInCubic(t);
+
+                transform.localPosition = Vector3.Lerp(bounceTop, restingLocalPosition, easedT);
+                transform.Rotate(spinSpeed * Time.deltaTime, Space.Self);
+
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+
+            transform.localPosition = restingLocalPosition;
+        }
+        
+        
 
         private bool TryGetTargetRotation(int value, out Quaternion rotation)
         {
             switch (value)
             {
                 case 1:
-                    rotation = Quaternion.Euler(face1Rotation);
+                    rotation = Quaternion.Euler(face1Rotation.x, this.transform.eulerAngles.y,face1Rotation.z);
                     return true;
                 case 2:
                     rotation = Quaternion.Euler(face2Rotation);
@@ -121,6 +175,11 @@ namespace Joker.Monopoly
             }
         }
 
+        private float EaseInCubic(float t)
+        {
+            return t * t * t;
+        }
+
         private float EaseOutCubic(float t)
         {
             return 1f - Mathf.Pow(1f - t, 3f);
@@ -131,6 +190,12 @@ namespace Joker.Monopoly
             float c1 = 1.70158f;
             float c3 = c1 + 1f;
             return 1f + c3 * Mathf.Pow(t - 1f, 3f) + c1 * Mathf.Pow(t - 1f, 2f);
+        }
+        
+        public void SetRestingLocalPosition(Vector3 localPosition)
+        {
+            restingLocalPosition = localPosition;
+            transform.localPosition = localPosition;
         }
     }
 }
