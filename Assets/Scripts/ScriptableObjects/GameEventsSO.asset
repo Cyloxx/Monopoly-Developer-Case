@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d88d05dc8858304cb3455f94af52496, type: 3}
   m_Name: GameEventsSO
   m_EditorClassIdentifier: 
-  OnDiceRolled:
+  onDiceRolled:
     m_PersistentCalls:
       m_Calls: []
-  OnItemCollected:
+  onItemCollected:
     m_PersistentCalls:
       m_Calls: []
-  OnPlayerMoved:
+  onPlayerMoved:
     m_PersistentCalls:
       m_Calls: []

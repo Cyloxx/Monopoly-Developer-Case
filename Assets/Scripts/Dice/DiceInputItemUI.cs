@@ -14,7 +14,7 @@ namespace Joker.Monopoly
         {
             if (diceLabelText != null)
             {
-                diceLabelText.text = $"Dice {diceIndex}";
+                diceLabelText.text = $"Enter\nDice {diceIndex}\nValue" ;
             }
 
             if (diceInputField != null)

@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemId: pearData
   itemName: Pear
-  icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  icon: {fileID: 21300000, guid: 2dee0da5c6555f44b859277e2eaf8da7, type: 3}
   defaultQuantity: 0
+  itemPrefab: {fileID: 1763817136346132, guid: 0f3575c567ebe8241a4a6ad511fd7017, type: 3}

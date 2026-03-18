@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemId: strawberryData
   itemName: Strawberry
-  icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  icon: {fileID: 21300000, guid: 85d4476c90cab664abb81d9b53d64464, type: 3}
   defaultQuantity: 0
+  itemPrefab: {fileID: 1724972533694550, guid: 63e523ab5d9ce7348b431ae1d689a54d, type: 3}

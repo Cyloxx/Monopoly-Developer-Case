@@ -16,12 +16,16 @@ MonoBehaviour:
   - rewardType: 1
     icon: {fileID: 21300000, guid: 445c8e12cde421c439783374f1fcbcaa, type: 3}
     itemData: {fileID: 11400000, guid: ff49e1833c952144b977397770f93c6e, type: 2}
+    itemModel: {fileID: 1829371231341652, guid: 426b44a7575f71e479fab4f4e8431989, type: 3}
   - rewardType: 2
     icon: {fileID: 21300000, guid: 2dee0da5c6555f44b859277e2eaf8da7, type: 3}
     itemData: {fileID: 11400000, guid: 39d707b2252d71f4ca8e779e3ad0dd9e, type: 2}
+    itemModel: {fileID: 1763817136346132, guid: 0f3575c567ebe8241a4a6ad511fd7017, type: 3}
   - rewardType: 3
     icon: {fileID: 21300000, guid: 85d4476c90cab664abb81d9b53d64464, type: 3}
     itemData: {fileID: 11400000, guid: 21886c96d23a80545a5c99d64390e25b, type: 2}
+    itemModel: {fileID: 1724972533694550, guid: 63e523ab5d9ce7348b431ae1d689a54d, type: 3}
   - rewardType: 0
     icon: {fileID: 0}
     itemData: {fileID: 0}
+    itemModel: {fileID: 0}

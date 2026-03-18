@@ -6,8 +6,7 @@ namespace Joker.Monopoly
 {
     public class InventorySlotUI : MonoBehaviour
     {
-        [SerializeField]
-        private Image iconImage;
+        public Image iconImage;
 
         [SerializeField]
         private TextMeshProUGUI countText;

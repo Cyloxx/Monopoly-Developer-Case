@@ -162,12 +162,26 @@ namespace Joker.Monopoly
 
             for (int i = 0; i < stepCount; i++)
             {
+                BoardTile previousTile = boardGenerator.Runtime.GetTile(CurrentTileIndex);
+
+                if (previousTile != null)
+                {
+                    previousTile.ShowRewardVisual();
+                }
+
                 int nextTileIndex = CurrentTileIndex + direction;
                 int wrappedTileIndex = boardGenerator.Runtime.WrapIndex(nextTileIndex);
                 Vector3 targetPosition = GetTileTargetPosition(wrappedTileIndex);
-
                 CurrentTileIndex = wrappedTileIndex;
+
                 yield return StartCoroutine(playerToken.MoveToPositionRoutine(targetPosition));
+
+                BoardTile landedTile = boardGenerator.Runtime.GetTile(CurrentTileIndex);
+
+                if (landedTile != null)
+                {
+                    landedTile.PlayLandingFeedback();
+                }
 
                 Debug.Log($"[PlayerBoardController] Step {i + 1}/{stepCount}, CurrentTileIndex: {CurrentTileIndex}");
 
@@ -226,6 +240,9 @@ namespace Joker.Monopoly
                 return;
             }
 
+            currentTile.PlayRewardCollectedFeedback();
+            gameEvents.onRewardCollected.Invoke(rewardItem, tileData.rewardAmount);
+            
             for (int i = 0; i < tileData.rewardAmount; i++)
             {
                 gameEvents.onItemCollected.Invoke(rewardItem);

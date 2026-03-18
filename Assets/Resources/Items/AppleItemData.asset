@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemId: appleData
   itemName: Apple
-  icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  icon: {fileID: 21300000, guid: 445c8e12cde421c439783374f1fcbcaa, type: 3}
   defaultQuantity: 0
+  itemPrefab: {fileID: 1829371231341652, guid: 426b44a7575f71e479fab4f4e8431989, type: 3}

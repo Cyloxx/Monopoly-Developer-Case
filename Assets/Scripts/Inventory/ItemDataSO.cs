@@ -10,5 +10,6 @@ namespace Joker.Monopoly
         public string itemName;
         public Sprite icon;
         public int defaultQuantity = 0;
+        public GameObject itemPrefab;
     }
 }

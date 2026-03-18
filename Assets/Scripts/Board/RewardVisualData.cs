@@ -7,7 +7,6 @@ namespace Joker.Monopoly
     public class RewardVisualData
     {
         public TileRewardType rewardType;
-        public Sprite icon;
         public ItemDataSO itemData;
     }
 }

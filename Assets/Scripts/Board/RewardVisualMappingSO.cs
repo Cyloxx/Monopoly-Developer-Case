@@ -14,7 +14,7 @@ namespace Joker.Monopoly
             {
                 if (rewardVisual.rewardType == rewardType)
                 {
-                    icon = rewardVisual.icon;
+                    icon = rewardVisual.itemData.icon;
                     return true;
                 }
             }
@@ -34,6 +34,21 @@ namespace Joker.Monopoly
             }
 
             itemData = null;
+            return false;
+        }
+        
+        public bool TryGetModel(TileRewardType rewardType, out GameObject itemModel)
+        {
+            foreach (RewardVisualData rewardVisual in rewardVisuals)
+            {
+                if (rewardVisual.rewardType == rewardType)
+                {
+                    itemModel = rewardVisual.itemData.itemPrefab;
+                    return itemModel != null;
+                }
+            }
+
+            itemModel = null;
             return false;
         }
     }

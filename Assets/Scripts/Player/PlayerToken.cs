@@ -9,6 +9,7 @@ namespace Joker.Monopoly
         [SerializeField] private float hopHeight = 0.35f;
         [SerializeField] private float landingBounceHeight = 0.08f;
         [SerializeField] private float landingBounceDuration = 0.05f;
+        [SerializeField] private Animator animator;
 
         private Coroutine movementCoroutine;
 
@@ -33,6 +34,8 @@ namespace Joker.Monopoly
             Vector3 startPosition = transform.position;
             float elapsed = 0f;
 
+            animator.SetTrigger("Jump");
+            
             while (elapsed < moveDuration)
             {
                 float t = elapsed / moveDuration;
