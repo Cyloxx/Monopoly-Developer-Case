@@ -137,7 +137,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &24704540
 RectTransform:
   m_ObjectHideFlags: 0
@@ -210,15 +210,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59f7e3a38c1b722459184e04a3b65eab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  root: {fileID: 24704539}
   spinButton: {fileID: 1397843673}
-  resultText: {fileID: 496338651}
-  rewardVisualMapping: {fileID: 11400000, guid: 31520d1efab2e1d48a0e303f98730a56, type: 2}
+  wheel: {fileID: 1778897995}
   gameEvents: {fileID: 11400000, guid: 9d5ccb39dbc4bc84e968356bd34b2f59, type: 2}
-  strawberryAngle: {x: 0, y: 0, z: 0}
-  appleAngle: {x: 0, y: 0, z: 120}
-  pearAngle: {x: 0, y: 0, z: 240}
-  rotationSpeed: 0
+  rewardVisualMapping: {fileID: 11400000, guid: 31520d1efab2e1d48a0e303f98730a56, type: 2}
 --- !u!1 &124489904
 GameObject:
   m_ObjectHideFlags: 0
@@ -3123,7 +3118,7 @@ Transform:
   m_GameObject: {fileID: 1128146201}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: -8}
+  m_LocalPosition: {x: 0.5, y: 0, z: -8}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -5766,8 +5761,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72db6f54df88ccf45abb4d23402cb278, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerOffset: {x: 0, y: 1, z: -4}
-  diceOffset: {x: 0, y: 2, z: -3}
+  playerOffset: {x: 0, y: 2, z: -4}
+  diceOffset: {x: 0, y: 3, z: -3}
   smoothTime: 0.5
   lookAtTarget: 1
   playerTarget: {fileID: 867076010}

@@ -88,6 +88,7 @@ namespace Joker.Monopoly
 
             Runtime = new BoardRuntime(spawnedTiles);
             ConfigurePortalTiles();
+            ConfigureQuestionTiles();
             OnBoardGenerated?.Invoke(Runtime);
         }
 
@@ -129,6 +130,26 @@ namespace Joker.Monopoly
             if (lastTile != null)
             {
                 lastTile.SetRightPortalActive(true);
+            }
+        }
+
+        private void ConfigureQuestionTiles()
+        {
+            if (Runtime == null || Runtime.TileCount == 0)
+            {
+                return;
+            }
+
+            for (int i = 0; i < Runtime.TileCount; i++)
+            {
+                BoardTile tile = Runtime.GetTile(i);
+
+                if (tile == null || tile.TileData == null)
+                {
+                    continue;
+                }
+
+                tile.SetQuestionMarkActive(tile.TileData.rewardType == TileRewardType.Question);
             }
         }
         

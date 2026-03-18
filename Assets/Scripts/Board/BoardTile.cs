@@ -15,6 +15,7 @@ namespace Joker.Monopoly
         
         [SerializeField] private GameObject leftPortalVisual;
         [SerializeField] private GameObject rightPortalVisual;
+        [SerializeField] private GameObject questionMarkVisual;
         [SerializeField] private List<GameObject> packs;
 
         public TileData TileData { get; private set; }
@@ -166,6 +167,13 @@ namespace Joker.Monopoly
             if (rightPortalVisual != null)
             {
                 rightPortalVisual.SetActive(isActive);
+            }
+        }
+        public void SetQuestionMarkActive(bool isActive)
+        {
+            if (questionMarkVisual != null)
+            {
+                questionMarkVisual.SetActive(isActive);
             }
         }
     }
