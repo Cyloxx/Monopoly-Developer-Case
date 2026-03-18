@@ -31,6 +31,8 @@ namespace Joker.Monopoly
 
         private IEnumerator MoveArcCoroutine(Vector3 targetPosition)
         {
+            SoundController.instance.PlayMoveSound();
+
             Vector3 startPosition = transform.position;
             float elapsed = 0f;
 

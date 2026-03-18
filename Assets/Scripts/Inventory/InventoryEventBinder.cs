@@ -47,6 +47,8 @@ namespace Joker.Monopoly
             Transform parent = popOutParent != null ? popOutParent : transform;
             UIItemPopOut popOutInstance = Instantiate(popOutPrefab, parent);
             popOutInstance.Initialize(itemData, amount);
+            SoundController.instance.PlayItemObtainedSound();
+            
         }
     }
 }

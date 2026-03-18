@@ -13,16 +13,14 @@ namespace Joker.Monopoly
         [SerializeField] private float stepDelay;
         [SerializeField] private GameEventsSO gameEvents;
         [SerializeField] private RewardVisualMappingSO rewardVisualMapping;
+        [SerializeField] private StepCounterUI stepCounterUI;
 
         private Coroutine movementCoroutine;
-        
         public event Action OnMovementStarted;
         public event Action OnMovementCompleted;
         
         public bool IsMoving => isMoving;
         private bool isMoving;
-        
-        
 
         public int CurrentTileIndex { get; private set; }
 
@@ -116,12 +114,6 @@ namespace Joker.Monopoly
             playerToken.SetPosition(targetPosition);
         }
         
-        [ContextMenu("Move By 2 Step")]
-        public void MoveByOneStep()
-        {
-            MoveBySteps(2);
-        }
-
         public void MoveBySteps(int steps)
         {
             
@@ -184,6 +176,7 @@ namespace Joker.Monopoly
                 }
 
                 Debug.Log($"[PlayerBoardController] Step {i + 1}/{stepCount}, CurrentTileIndex: {CurrentTileIndex}");
+                stepCounterUI.SetText($"{i + 1}/{stepCount}");
 
                 yield return new WaitForSeconds(stepDelay);
             }

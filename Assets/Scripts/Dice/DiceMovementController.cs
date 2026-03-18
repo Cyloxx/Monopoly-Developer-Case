@@ -92,7 +92,7 @@ namespace Joker.Monopoly
                 {
                     continue;
                 }
-
+                SoundController.instance.PlayDiceSound();
                 runningCoroutines.Add(StartCoroutine(activeDiceViews[i].RollToValueRoutine(diceValues[i])));
             }
 
