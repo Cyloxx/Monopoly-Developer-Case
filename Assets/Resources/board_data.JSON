@@ -4,6 +4,9 @@
 { "tileIndex": 1, "rewardType": 0, "rewardAmount": 0 },
 { "tileIndex": 2, "rewardType": 1, "rewardAmount": 1 },
 { "tileIndex": 3, "rewardType": 2, "rewardAmount": 2 },
-{ "tileIndex": 8, "rewardType": 3, "rewardAmount": 3 }
+{ "tileIndex": 4, "rewardType": 3, "rewardAmount": 3 },
+{ "tileIndex": 5, "rewardType": 4, "rewardAmount": 0 },
+{ "tileIndex": 6, "rewardType": 4, "rewardAmount": 0 },
+{ "tileIndex": 7, "rewardType": 4, "rewardAmount": 0 }
   ]
 }

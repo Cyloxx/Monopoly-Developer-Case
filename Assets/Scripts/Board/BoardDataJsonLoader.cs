@@ -60,7 +60,9 @@ namespace Joker.Monopoly
                     Debug.LogWarning($"Tile {tile.tileIndex} has reward type None but reward amount is greater than zero.");
                 }
 
-                if (tile.rewardType != TileRewardType.None && tile.rewardAmount == 0)
+                if (tile.rewardType != TileRewardType.None &&
+                    tile.rewardType != TileRewardType.Question &&
+                    tile.rewardAmount == 0)
                 {
                     Debug.LogWarning($"Tile {tile.tileIndex} has a reward type but reward amount is zero.");
                 }

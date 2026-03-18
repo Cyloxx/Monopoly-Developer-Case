@@ -14,6 +14,7 @@ namespace Joker.Monopoly
         [SerializeField] private GameEventsSO gameEvents;
         [SerializeField] private RewardVisualMappingSO rewardVisualMapping;
         [SerializeField] private StepCounterUI stepCounterUI;
+        [SerializeField] private SpinWheelUI spinWheelUI;
 
         private Coroutine movementCoroutine;
         public event Action OnMovementStarted;
@@ -193,6 +194,9 @@ namespace Joker.Monopoly
         
         private void ResolveLandingReward()
         {
+            
+           
+            
             if (boardGenerator == null || boardGenerator.Runtime == null)
             {
                 Debug.LogWarning("[PlayerBoardController] Can not resolve reward because BoardRuntime is not ready.");
@@ -208,6 +212,16 @@ namespace Joker.Monopoly
             }
 
             TileData tileData = currentTile.TileData;
+            
+            if (tileData.rewardType == TileRewardType.Question)
+            {
+                if (spinWheelUI != null)
+                {
+                    currentTile.PlayRewardCollectedFeedback();
+                    spinWheelUI.gameObject.SetActive(true);
+                }
+                return;
+            }
 
             if (tileData.rewardType == TileRewardType.None || tileData.rewardAmount <= 0)
             {
